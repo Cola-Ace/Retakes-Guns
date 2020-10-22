@@ -1,0 +1,154 @@
+"Phrases"
+{
+    "Main Menu Title"
+    {
+        "chi" "更换枪械总菜单"
+        "en" "Change guns main menu"
+    }
+    "Main Menu Rifle"
+    {
+        "#format" "{1:s}"
+        "chi" "更换步枪\n当前选择: {1}"
+        "en" "Change rifle\nYour selection: {1}"
+    }
+    "Main Menu Pistol Round"
+    {
+        "#format" "{1:s}"
+        "chi" "更换手枪局手枪\n当前选择: {1}"
+        "en" "Change pistol-round's pistol\nYour selection: {1}"
+    }
+    "Main Menu Full Buy Round"
+    {
+        "#format" "{1:s}"
+        "chi" "更换全起局手枪\n当前选择: {1}"
+        "en" "Change full-buy-round's pistol\nYour selection: {1}"
+    }
+    "Main Menu SMG"
+    {
+        "#format" "{1:s}"
+        "chi" "更换冲锋枪\n当前选择: {1}"
+        "en" "Change SMG\nYour selection: {1}"
+    }
+    "Main Menu AWP"
+    {
+        "#format" "{1:s}"
+        "chi" "更换是否使用狙击枪\n当前选择: {1}"
+        "en" "Change use or not AWP\nYour selection: {1}"
+    }
+    "Use Weapon Next Round"
+    {
+        "chi" "你将在下一回合使用你选择的武器"
+        "en" "You will use the weapon of your choice in the next round"
+    }
+    "No Spectator Select Weapon"
+    {
+        "chi" "你不能在观察者选择武器"
+        "en" "You can't choose weapons in the spectator team"
+    }
+    "Gun Menu Pistol Round CT"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择手枪局的手枪 (CT) \n当前选择: {1}"
+        "en" "Choose pistol-round's pistol (CT) \nYour selection: {1}"
+    }
+    "Gun Menu Pistol Round T"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择手枪局的手枪 (T) \n当前选择: {1}"
+        "en" "Choose pistol-round's pistol (T) \nYour selection: {1}"
+    }
+    "Gun Menu Full Round Pistol CT"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择全起局的手枪 (CT) \n当前选择: {1}"
+        "en" "Choose full-buy-round's pistol (CT) \nYour selection: {1}"
+    }
+    "Gun Menu Full Round Pistol T"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择全起局的手枪 (T) \n当前选择: {1}"
+        "en" "Choose full-buy-round's pistol (T) \nYour selection: {1}"
+    }
+    "Gun Menu SMG CT"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择冲锋枪 (CT) \n当前选择: {1}"
+        "en" "Choose SMG (CT) \nYour selection: {1}"
+    }
+    "Gun Menu SMG T"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择冲锋枪 (T) \n当前选择: {1}"
+        "en" "Choose SMG (T) \nYour selection: {1}"
+    }
+    "Gun Menu Rifle CT"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择步枪 (CT) \n当前选择: {1}"
+        "en" "Choose rifle (CT) \nYour selection: {1}"
+    }
+    "Gun Menu Rifle T"
+    {
+        "#format" "{1:s}"
+        "chi" "请选择步枪 (T) \n当前选择: {1}"
+        "en" "Choose rifle (T) \nYour selection: {1}"
+    }
+    "Gun Menu AWP"
+    {
+        #format" "{1:s}"
+        "chi" "是否希望在全起局拿到AWP?\n当前选择: {1}"
+        "en" "Do you want to get AWP in full buy round?\nYour selection: {1}"
+    }
+    "Pistol Round"
+    {
+        "chi" "手枪局"
+        "en" "Pistol Round"
+    }
+    "Full Buy Round"
+    {
+        "chi" "全起局"
+        "en" "Full Buy Round"
+    }
+    "Now Round"
+    {
+        "#format" "{1:s}"
+        "chi" "当前回合: \x04{1}"
+        "en" "Now is: \x04{1}"
+    }
+    "Hint Now Round"
+    {
+        "#format" "{1:s},{2:s}"
+        "chi" "当前回合: <font face='Arial' color='#00FF00' size='40'><b>{1}</b></font>\n<font face='Arial' color='#00FF00' size='40'><b>{2}</b></font>"
+        "en" "Now is: <font face='Arial' color='#00FF00' size='40'><b>{1}</b></font>\n<font face='Arial' color='#00FF00' size='40'><b>{2}</b></font>"
+    }
+    "Bombsite A"
+    {
+        "chi" "A包点"
+        "en" "Bombsite A"
+    }
+    "Bombsite B"
+    {
+        "chi" "B包点"
+        "en" "Bombsite B"
+    }
+    "Enabled"
+    {
+        "chi" "开启"
+        "en" "Enabled"
+    }
+    "Disabled"
+    {
+        "chi" "关闭"
+        "en" "Disabled
+    }
+    "Yes"
+    {
+        "chi" "是"
+        "en" "Yes"
+    }
+    "No"
+    {
+        "chi" 否"
+        "en" "No"
+    }
+}
