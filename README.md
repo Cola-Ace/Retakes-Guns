@@ -1,4 +1,5 @@
 # Retakes-Guns
+It works only in CS:GO.
 ## Plugin function:
 1. You can choose the pistol in the round and the pistol in the whole round
 2. There is a chance that one side of the game will be forced up (i.e. all submachine guns)
