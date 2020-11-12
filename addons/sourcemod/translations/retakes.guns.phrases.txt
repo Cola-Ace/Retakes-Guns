@@ -95,7 +95,7 @@
     }
     "Gun Menu AWP"
     {
-        #format" "{1:s}"
+        "#format" "{1:s}"
         "chi" "是否希望在全起局拿到AWP?\n当前选择: {1}"
         "en" "Do you want to get AWP in full buy round?\nYour selection: {1}"
     }
