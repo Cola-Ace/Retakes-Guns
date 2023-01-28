@@ -1,5 +1,5 @@
 # Retakes-Guns
-It works only in CS:GO.
+It only works in CS:GO.
 
 # Update Logs
 
