@@ -112,8 +112,8 @@
     "Now Round"
     {
         "#format" "{1:s}"
-        "chi" "当前回合: \x04{1}"
-        "en" "Now is: \x04{1}"
+        "chi" "当前回合: {green}{1}{default}"
+        "en" "Now is: {green}{1}{default}"
     }
     "Hint Now Round"
     {
@@ -139,7 +139,7 @@
     "Disabled"
     {
         "chi" "关闭"
-        "en" "Disabled
+        "en" "Disabled"
     }
     "Yes"
     {
@@ -148,7 +148,7 @@
     }
     "No"
     {
-        "chi" 否"
+        "chi" "否"
         "en" "No"
     }
 }
