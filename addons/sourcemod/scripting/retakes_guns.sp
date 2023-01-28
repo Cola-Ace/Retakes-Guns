@@ -634,6 +634,10 @@ void GivePlayerAWP(){
 	bool temp = true;
 	do {
 		int ct = GetArrayCellRandom(g_CT);
+		if (ct == -1){
+			temp = false;
+			break;
+		}
 		if (g_AWP[ct] && StrEqual(g_RoundType, "full")){
 			int weapon = GetPlayerWeaponSlot(ct, CS_SLOT_PRIMARY);
 			RemovePlayerItem(ct, weapon);
@@ -647,6 +651,10 @@ void GivePlayerAWP(){
 	temp = true;
 	do {
 		int t = GetArrayCellRandom(g_T);
+		if (t == -1){
+			temp = false;
+			break;
+		}
 		if (g_AWP[t] && StrEqual(g_RoundType, "full")){
 			int weapon = GetPlayerWeaponSlot(t, CS_SLOT_PRIMARY);
 			RemovePlayerItem(t, weapon);
@@ -667,8 +675,7 @@ void GivePlayerAWP(){
 
 stock int GetArrayRandomIndex(ArrayList array) {
   int len = array.Length;
-  if (len == 0)
-    ThrowError("Can't get random index from empty array");
+  if (len == 0) return -1;
   return GetRandomInt(0, len - 1);
 }
 
