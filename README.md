@@ -3,7 +3,7 @@ It only works in CS:GO.
 
 # Update Logs
 
-- 2023.1.28 - The code is like a shit mountain (lots of if and else if, so messy), so I decided to rebuild it. I updated the latest version and fixed all bugs I have known.
+- 2023.1.28 - The code is like a shit mountain (lots of if and else if), so I decided to rebuild it. I updated the latest version and fixed all bugs I have known.
 
 ## Plugin function:
 1. You can choose the pistol in the round and the pistol in the whole round
