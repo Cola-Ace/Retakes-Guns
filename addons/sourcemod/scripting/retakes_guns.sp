@@ -3,7 +3,7 @@
 #include <cstrike>
 #include <clientprefs>
 #include <retakes>
-#include "include/restorecvars.inc"
+#include <restorecvars>
 
 bool g_AWP[MAXPLAYERS + 1] = false;
 bool g_Force_CT = false;
@@ -75,14 +75,17 @@ int g_Flash[MAXPLAYERS + 1];
 int g_Fire[MAXPLAYERS + 1];
 int g_Grenade[MAXPLAYERS + 1];
 
-Menu menus;
+Menu g_hMenu = null;
+
+static char _colorNames[][] = {"{default}", "{dark_red}", "{pink}", "{green}", "{yellow}", "{light_green}", "{light_red}", "{gray}", "{orange}", "{light_blue}", "{dark_blue}", "{purple}"};
+static char _colorCodes[][] = {"\x01", "\x02", "\x03", "\x04", "\x05", "\x06", "\x07", "\x08", "\x09", "\x0B", "\x0C", "\x0E"};
 
 public Plugin myinfo = {
 	name = "[Retakes] Guns",
 	author = "Xc_ace",	
 	description = "Retakes Guns",
-	version = "1.5",
-	url = "https://cncsgo.com.cn"
+	version = "1.6",
+	url = "https://github.com/Cola-Ace/Retakes-Guns"
 }
 
 public void OnPluginStart(){
@@ -102,7 +105,7 @@ public void OnPluginStart(){
 	g_AWP_CT = CreateConVar("sm_retakes_awp_ct", "1", "how many awp at most in CT?");
 	g_AWP_T = CreateConVar("sm_retakes_awp_t", "1", "how many awp at most in T?");
 	g_FullRound_Money = CreateConVar("sm_retakes_fullround_money", "10000", "how much money in full round to buy?");
-	g_AWP_Random = CreateConVar("sm_retakes_awp_random", "75", "what percentage will have awp?");
+	g_AWP_Random = CreateConVar("sm_retakes_awp_random", "30", "what percentage will have awp?");
 	g_Taser = CreateConVar("sm_retakes_taser", "0", "0 - disable, 1 - enabled", _, true, 0.0, true, 1.0);
 	g_Taser_CT = CreateConVar("sm_retakes_taser_ct", "1", "how many taser at most in CT?");
 	g_Taser_T = CreateConVar("sm_retakes_taser_t", "1", "how many taser at most in T");
@@ -129,12 +132,15 @@ public void OnPluginStart(){
 	g_hAWP = RegClientCookie("AWP", "", CookieAccess_Private);
 	
 	HookEvent("round_start", Event_RoundStart);
-	HookEvent("round_end", Event_RoundEnd);
 	
 	ExecuteAndSaveCvars("sourcemod/retakes_guns.cfg");
 	
 	FormatEx(enabled, sizeof(enabled), "%t", "Enabled");
 	FormatEx(disabled, sizeof(disabled), "%t", "Disabled");
+}
+
+public void OnConfigsExecuted(){
+	ServerCommand("mp_ct_default_secondary \"weapon_usp_sliencer\"")
 }
 
 public void OnAllPluginsLoaded()
@@ -146,19 +152,9 @@ public void OnAllPluginsLoaded()
 	DisablePlugin("gunmenu");
 }
 
-public Action Event_RoundEnd(Event event, const char[] name, bool dontBroadcast)
-{
-	for (int i = 0; i < MaxClients; i++){
-		if (IsValidClient(i)){
-			//CloseHandle(menus);
-			CancelClientMenu(i);
-		}
-	}
-}
-
 public void Retakes_OnGunsCommand(int client)
 {
-	Menus_Pistol(client);
+	g_hMenu_Pistol(client);
 }
 
 public void OnClientConnected(int client)
@@ -246,35 +242,35 @@ public void OnClientDisconnect(int client)
 
 public Action Command_GunMenu(int client, int argc)
 {
-	menus = new Menu(Handler_GunMenu);
-	menus.SetTitle("%t", "Main Menu Title");
+	g_hMenu = new Menu(Handler_GunMenu);
+	g_hMenu.SetTitle("%t", "Main Menu Title");
 	char info[256];
 	if (GetClientTeam(client) == CS_TEAM_CT){
 		FormatEx(info, sizeof(info), "%t", "Main Menu Rifle", GetWeaponName(g_Rifle_CT[client]));
-		menus.AddItem("rifle", info);
+		g_hMenu.AddItem("rifle", info);
 		FormatEx(info, sizeof(info), "%t", "Main Menu Pistol Round", GetWeaponName(g_Pistol_CT[client]));
-		menus.AddItem("pistol", info);
+		g_hMenu.AddItem("pistol", info);
 		FormatEx(info, sizeof(info), "%t", "Main Menu Full Buy Round", GetWeaponName(g_Full_Pistol_CT[client]));
-		menus.AddItem("fullpistol", info);
+		g_hMenu.AddItem("fullpistol", info);
 		FormatEx(info, sizeof(info), "%t", "Main Menu SMG", GetWeaponName(g_SMG_CT[client]));
-		menus.AddItem("smg", info);
+		g_hMenu.AddItem("smg", info);
 	}
 	else if(GetClientTeam(client) == CS_TEAM_T){
 		FormatEx(info, sizeof(info), "%t", "Main Menu Rifle", GetWeaponName(g_Rifle_T[client]));
-		menus.AddItem("rifle", info);
+		g_hMenu.AddItem("rifle", info);
 		FormatEx(info, sizeof(info), "%t", "Main Menu Pistol Round", GetWeaponName(g_Pistol_T[client]));
-		menus.AddItem("pistol", info);
+		g_hMenu.AddItem("pistol", info);
 		FormatEx(info, sizeof(info), "%t", "Main Menu Full Buy Round", GetWeaponName(g_Full_Pistol_T[client]));
-		menus.AddItem("fullpistol", info);
+		g_hMenu.AddItem("fullpistol", info);
 		FormatEx(info, sizeof(info), "%t", "Main Menu SMG", GetWeaponName(g_SMG_T[client]));
-		menus.AddItem("smg", info);
+		g_hMenu.AddItem("smg", info);
 	} else {
 		Retakes_Message(client, "%t", "No Spectator Select Weapon");
 		return;
 	}
 	FormatEx(info, sizeof(info), "%t", "Main Menu AWP", g_AWP[client] ? enabled:disabled);
-	menus.AddItem("awp", info);
-	menus.Display(client, MENU_TIME_FOREVER);
+	g_hMenu.AddItem("awp", info);
+	g_hMenu.Display(client, MENU_TIME_FOREVER);
 }
 
 public int Handler_GunMenu(Menu menu, MenuAction action, int client, int select)
@@ -284,19 +280,19 @@ public int Handler_GunMenu(Menu menu, MenuAction action, int client, int select)
 		char sBuffer[64];
 		menu.GetItem(select, sBuffer, sizeof(sBuffer));
 		if (StrEqual(sBuffer, "rifle") == true){
-			Menus_Rifle(client);
+			g_hMenu_Rifle(client);
 		}
 		else if(StrEqual(sBuffer, "pistol") == true){
-			Menus_Pistol(client);
+			g_hMenu_Pistol(client);
 		}
 		else if(StrEqual(sBuffer, "fullpistol") == true){
-			Menus_Full_Pistol(client);
+			g_hMenu_Full_Pistol(client);
 		}
 		else if(StrEqual(sBuffer, "smg") == true){
-			Menus_SMG(client);
+			g_hMenu_SMG(client);
 		}
 		else {
-			Menus_AWP(client);
+			g_hMenu_AWP(client);
 		}
 	}
 }
@@ -324,9 +320,7 @@ void DisablePlugin(char[] plugin)
 
 public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 {
-	if (!Retakes_Live()){
-		return;
-	}
+	if (!Retakes_Live()) return Plugin_Continue;
 	g_iTaser_CT = 0;
 	g_iTaser_T = 0;
 	g_Force_CT = false;
@@ -385,7 +379,7 @@ public int Handler_Pistol(Menu menu, MenuAction action, int client, int select)
 			Format(g_Pistol_T[client], sizeof(g_Pistol_T), sBuffer);
 		}
 		if (g_GunMenu[client] == false){
-			Menus_Full_Pistol(client);
+			g_hMenu_Full_Pistol(client);
 		} else {
 			g_GunMenu[client] = false;
 			Retakes_Message(client, "%t", "Use Weapon Next Round");
@@ -405,7 +399,7 @@ public int Handler_Full_Pistol(Menu menu, MenuAction action, int client, int sel
 			Format(g_Full_Pistol_T[client], sizeof(g_Full_Pistol_T), sBuffer);
 		}
 		if (g_GunMenu[client] == false){
-			Menus_SMG(client);
+			g_hMenu_SMG(client);
 		} else {
 			g_GunMenu[client] = false;
 			Retakes_Message(client, "%t", "Use Weapon Next Round");
@@ -425,7 +419,7 @@ public int Handler_SMG(Menu menu, MenuAction action, int client, int select)
 			Format(g_SMG_T[client], sizeof(g_SMG_T), sBuffer);
 		}
 		if (g_GunMenu[client] == false){
-			Menus_Rifle(client);
+			g_hMenu_Rifle(client);
 		} else {
 			g_GunMenu[client] = false;
 			Retakes_Message(client, "%t", "Use Weapon Next Round");
@@ -445,7 +439,7 @@ public int Handler_Rifle(Menu menu, MenuAction action, int client, int select)
 			Format(g_Rifle_T[client], sizeof(g_Rifle_T), sBuffer);
 		}
 		if (g_GunMenu[client] == false){
-			Menus_AWP(client);
+			g_hMenu_AWP(client);
 		} else {
 			g_GunMenu[client] = false;
 			Retakes_Message(client, "%t", "Use Weapon Next Round");
@@ -476,7 +470,7 @@ public Action Command_Guns(int client, int args)
 		Retakes_Message(client, "%t", "No Spectator Select Weapon");
 		return Plugin_Handled;
 	}
-	Menus_Pistol(client);
+	g_hMenu_Pistol(client);
 	return Plugin_Continue;
 }
 
@@ -486,109 +480,111 @@ public Action Command_AWP(int client, int args)
 		Retakes_Message(client, "%t", "No Spectator Select Weapon");
 		return Plugin_Handled;
 	}
-	Menus_AWP(client);
+	g_hMenu_AWP(client);
 	return Plugin_Continue;
 }
 
-void Menus_Pistol(int client)
+void g_hMenu_Pistol(int client)
 {
-	menus = new Menu(Handler_Pistol);
+	g_hMenu = new Menu(Handler_Pistol);
 	if (GetClientTeam(client) == CS_TEAM_CT){
-		menus.SetTitle("%t", "Gun Menu Pistol Round CT", GetWeaponName(g_Pistol_CT[client]));
-		menus.AddItem("weapon_usp_silencer", "USP-S");
-		menus.AddItem("weapon_hkp2000", "P2000");
-		menus.AddItem("weapon_fiveseven", "FN57");
+		g_hMenu.SetTitle("%t", "Gun Menu Pistol Round CT", GetWeaponName(g_Pistol_CT[client]));
+		g_hMenu.AddItem("weapon_usp_silencer", "USP-S");
+		g_hMenu.AddItem("weapon_hkp2000", "P2000");
+		g_hMenu.AddItem("weapon_fiveseven", "FN57");
 	}
 	else if(GetClientTeam(client) == CS_TEAM_T){
-		menus.SetTitle("%t", "Gun Menu Pistol Round T", GetWeaponName(g_Pistol_T[client]))
-		menus.AddItem("weapon_glock", "Glock-18");
-		menus.AddItem("weapon_tec9", "Tec-9");
+		g_hMenu.SetTitle("%t", "Gun Menu Pistol Round T", GetWeaponName(g_Pistol_T[client]))
+		g_hMenu.AddItem("weapon_glock", "Glock-18");
+		g_hMenu.AddItem("weapon_tec9", "Tec-9");
 	}
-	menus.AddItem("weapon_deagle", "Desert Eagle");
-	menus.AddItem("weapon_revolver", "Revolver");
-	menus.AddItem("weapon_cz75a", "CZ75");
-	menus.AddItem("weapon_p250", "P250");
-	menus.ExitButton = true;
-	menus.Display(client, MENU_TIME_FOREVER);
+	g_hMenu.AddItem("weapon_deagle", "Desert Eagle");
+	g_hMenu.AddItem("weapon_revolver", "Revolver");
+	g_hMenu.AddItem("weapon_cz75a", "CZ75");
+	g_hMenu.AddItem("weapon_p250", "P250");
+	g_hMenu.ExitButton = true;
+	g_hMenu.Display(client, MENU_TIME_FOREVER);
 }
 
-void Menus_Full_Pistol(int client)
+void g_hMenu_Full_Pistol(int client)
 {
-	menus = new Menu(Handler_Full_Pistol);
+	g_hMenu = new Menu(Handler_Full_Pistol);
 	if (GetClientTeam(client) == CS_TEAM_CT){
-		menus.SetTitle("%t", "Gun Menu Full Round Pistol CT", GetWeaponName(g_Full_Pistol_CT[client]));
-		menus.AddItem("weapon_usp_silencer", "USP-S");
-		menus.AddItem("weapon_hkp2000", "P2000");
-		menus.AddItem("weapon_fiveseven", "FN57");
+		g_hMenu.SetTitle("%t", "Gun Menu Full Round Pistol CT", GetWeaponName(g_Full_Pistol_CT[client]));
+		g_hMenu.AddItem("weapon_usp_silencer", "USP-S");
+		g_hMenu.AddItem("weapon_hkp2000", "P2000");
+		g_hMenu.AddItem("weapon_fiveseven", "FN57");
 	}
 	else if(GetClientTeam(client) == CS_TEAM_T){
-		menus.SetTitle("%t", "Gun Menu Full Round Pistol T", GetWeaponName(g_Full_Pistol_T[client]));
-		menus.AddItem("weapon_glock", "Glock-18");
-		menus.AddItem("weapon_tec9", "Tec-9");
+		g_hMenu.SetTitle("%t", "Gun Menu Full Round Pistol T", GetWeaponName(g_Full_Pistol_T[client]));
+		g_hMenu.AddItem("weapon_glock", "Glock-18");
+		g_hMenu.AddItem("weapon_tec9", "Tec-9");
 	}
-	menus.AddItem("weapon_deagle", "Desert Eagle");
-	menus.AddItem("weapon_revolver", "Revolver");
-	menus.AddItem("weapon_cz75a", "CZ75");
-	menus.AddItem("weapon_p250", "P250");
-	menus.ExitButton = true;
-	menus.Display(client, MENU_TIME_FOREVER);
+	g_hMenu.AddItem("weapon_deagle", "Desert Eagle");
+	g_hMenu.AddItem("weapon_revolver", "Revolver");
+	g_hMenu.AddItem("weapon_cz75a", "CZ75");
+	g_hMenu.AddItem("weapon_p250", "P250");
+	g_hMenu.ExitButton = true;
+	g_hMenu.Display(client, MENU_TIME_FOREVER);
 }
 
-void Menus_SMG(int client)
+void g_hMenu_SMG(int client)
 {
-	menus = new Menu(Handler_SMG);
+	g_hMenu = new Menu(Handler_SMG);
 	if (GetClientTeam(client) == CS_TEAM_CT){
-		menus.SetTitle("%t", "Gun Menu SMG CT", GetWeaponName(g_SMG_CT[client]));
-		menus.AddItem("weapon_mp9", "MP9");
-		menus.AddItem("weapon_mag7", "Mag-7");
+		g_hMenu.SetTitle("%t", "Gun Menu SMG CT", GetWeaponName(g_SMG_CT[client]));
+		g_hMenu.AddItem("weapon_mp9", "MP9");
+		g_hMenu.AddItem("weapon_mag7", "Mag-7");
 	}
 	else if(GetClientTeam(client) == CS_TEAM_T){
-		menus.SetTitle("%t", "Gun Menu SMG T", GetWeaponName(g_SMG_T[client]));
-		menus.AddItem("weapon_mac10", "Mac-10");
-		menus.AddItem("weapon_sawedoff", "Sawed-Off");
+		g_hMenu.SetTitle("%t", "Gun Menu SMG T", GetWeaponName(g_SMG_T[client]));
+		g_hMenu.AddItem("weapon_mac10", "Mac-10");
+		g_hMenu.AddItem("weapon_sawedoff", "Sawed-Off");
 	}
-	menus.AddItem("weapon_ump45", "UMP-45");
-	menus.AddItem("weapon_bizon", "PP-Bizon");
-	menus.AddItem("weapon_p90", "P90");
-	menus.AddItem("weapon_mp7", "MP7");
-	menus.AddItem("weapon_mp5sd", "MP5-SD");
-	menus.AddItem("weapon_xm1014", "XM1014");
-	menus.AddItem("weapon_nova", "Nova");
-	menus.ExitButton = true;
-	menus.Display(client, MENU_TIME_FOREVER);
+	g_hMenu.AddItem("weapon_ump45", "UMP-45");
+	g_hMenu.AddItem("weapon_bizon", "PP-Bizon");
+	g_hMenu.AddItem("weapon_p90", "P90");
+	g_hMenu.AddItem("weapon_mp7", "MP7");
+	g_hMenu.AddItem("weapon_mp5sd", "MP5-SD");
+	g_hMenu.AddItem("weapon_xm1014", "XM1014");
+	g_hMenu.AddItem("weapon_nova", "Nova");
+	g_hMenu.ExitButton = true;
+	g_hMenu.Display(client, MENU_TIME_FOREVER);
 }
 
-void Menus_Rifle(int client)
+void g_hMenu_Rifle(int client)
 {
-	menus = new Menu(Handler_Rifle);
+	g_hMenu = new Menu(Handler_Rifle);
 	if (GetClientTeam(client) == CS_TEAM_CT){
-		menus.SetTitle("%t", "Gun Menu Rifle CT", GetWeaponName(g_Rifle_CT[client]));
-		menus.AddItem("weapon_m4a1", "M4A4");
-		menus.AddItem("weapon_m4a1_silencer", "M4A1-S");
-		menus.AddItem("weapon_famas", "Famas");
-		menus.AddItem("weapon_aug", "AUG");
+		g_hMenu.SetTitle("%t", "Gun Menu Rifle CT", GetWeaponName(g_Rifle_CT[client]));
+		g_hMenu.AddItem("weapon_m4a1", "M4A4");
+		g_hMenu.AddItem("weapon_m4a1_silencer", "M4A1-S");
+		g_hMenu.AddItem("weapon_famas", "Famas");
+		g_hMenu.AddItem("weapon_aug", "AUG");
 	}
 	else if(GetClientTeam(client) == CS_TEAM_T){
-		menus.SetTitle("%t", "Gun Menu Rifle T", GetWeaponName(g_Rifle_T[client]));
-		menus.AddItem("weapon_ak47", "AK-47");
-		menus.AddItem("weapon_galilar", "Galil AR");
-		menus.AddItem("weapon_sg556", "SG 553");
+		g_hMenu.SetTitle("%t", "Gun Menu Rifle T", GetWeaponName(g_Rifle_T[client]));
+		g_hMenu.AddItem("weapon_ak47", "AK-47");
+		g_hMenu.AddItem("weapon_galilar", "Galil AR");
+		g_hMenu.AddItem("weapon_sg556", "SG 553");
 	}
-	menus.ExitButton = true;
-	menus.Display(client, MENU_TIME_FOREVER);
+	g_hMenu.AddItem("weapon_scout", "SSG08");
+	
+	g_hMenu.ExitButton = true;
+	g_hMenu.Display(client, MENU_TIME_FOREVER);
 }
 
-void Menus_AWP(int client)
+void g_hMenu_AWP(int client)
 {
-	menus = new Menu(Handler_AWP);
-	menus.SetTitle("%t", "Gun Menu AWP", g_AWP[client] ? enabled:disabled);
+	g_hMenu = new Menu(Handler_AWP);
+	g_hMenu.SetTitle("%t", "Gun Menu AWP", g_AWP[client] ? enabled:disabled);
 	char Yes[64];
 	char No[64];
 	FormatEx(Yes, sizeof(Yes), "%t", "Yes");
 	FormatEx(No, sizeof(No), "%t", "No");
-	menus.AddItem("1", Yes);
-	menus.AddItem("0", No);
-	menus.Display(client, MENU_TIME_FOREVER);
+	g_hMenu.AddItem("1", Yes);
+	g_hMenu.AddItem("0", No);
+	g_hMenu.Display(client, MENU_TIME_FOREVER);
 }
 
 void GiveAllPlayerWeapon()
@@ -605,15 +601,80 @@ void GiveAllPlayerWeapon()
 	g_iFire_T = 0;
 	
 	ShowInfo();
-	for (int i = 0; i < MaxClients; i++){
+	ArrayList clients = new ArrayList();
+	for (int i = 1; i < MaxClients; i++){
 		if (IsValidClient(i)){
-			g_Smoke[i] = 0;
-			g_Fire[i] = 0
-			g_Grenade[i] = 0;
-			g_Flash[i] = 0;
-			GivePlayerWeapon(i);
+			clients.Push(i);
 		}
 	}
+	int len = clients.Length;
+	for (int i = 0; i < len; i++){
+		int index = GetRandomInt(0, clients.Length - 1);
+		int client = clients.Get(index);
+		clients.Erase(index);
+		g_Smoke[client] = 0;
+		g_Fire[client] = 0;
+		g_Grenade[client] = 0;
+		g_Flash[client] = 0;
+		GivePlayerWeapon(client);
+	}
+	GivePlayerAWP();
+	
+}
+
+void GivePlayerAWP(){
+	ArrayList g_CT = new ArrayList();
+	ArrayList g_T = new ArrayList();
+	for (int i = 0; i <= MaxClients; i++){
+		if (IsValidClient(i)){
+			if (GetClientTeam(i) == CS_TEAM_CT)g_CT.Push(i);
+			else if (GetClientTeam(i) == CS_TEAM_T)g_T.Push(i);
+		}
+	}
+	bool temp = true;
+	do {
+		int ct = GetArrayCellRandom(g_CT);
+		if (g_AWP[ct] && StrEqual(g_RoundType, "full")){
+			int weapon = GetPlayerWeaponSlot(ct, CS_SLOT_PRIMARY);
+			RemovePlayerItem(ct, weapon);
+			AcceptEntityInput(weapon, "Kill");
+			GivePlayerItem(ct, "weapon_awp");
+			temp = false;
+		} else {
+			g_CT.Erase(g_CT.FindValue(ct));
+		}
+	} while (temp == true);
+	temp = true;
+	do {
+		int t = GetArrayCellRandom(g_T);
+		if (g_AWP[t] && StrEqual(g_RoundType, "full")){
+			int weapon = GetPlayerWeaponSlot(t, CS_SLOT_PRIMARY);
+			RemovePlayerItem(t, weapon);
+			AcceptEntityInput(weapon, "Kill");
+			GivePlayerItem(t, "weapon_awp");
+			temp = false;
+		} else {
+			g_T.Erase(g_T.FindValue(t));
+		}
+	} while (temp == true);
+	for (int i = 0; i < g_CT.Length; i++){
+		g_CT.Erase(0);
+	}
+	for (int i = 0; i < g_T.Length; i++){
+		g_T.Erase(0);
+	}
+}
+
+stock int GetArrayRandomIndex(ArrayList array) {
+  int len = array.Length;
+  if (len == 0)
+    ThrowError("Can't get random index from empty array");
+  return GetRandomInt(0, len - 1);
+}
+
+stock int GetArrayCellRandom(ArrayList array) {
+  int index = GetArrayRandomIndex(array);
+  return array.Get(index);
 }
 
 void GivePlayerWeapon(int client)
@@ -630,7 +691,7 @@ void GivePlayerWeapon(int client)
 	SetEntProp(client, Prop_Send, "m_bHasHelmet", 0);
 	SetEntProp(client, Prop_Send, "m_bHasDefuser", 0);
 	
-	if (StrEqual(g_RoundType, "pistol") == true){
+	if (StrEqual(g_RoundType, "pistol")){
 		iMoney = 800;
 		if (GetClientTeam(client) == CS_TEAM_CT){
 			GivePlayerItem(client, g_Pistol_CT[client]);
@@ -654,42 +715,14 @@ void GivePlayerWeapon(int client)
 	else if(StrEqual(g_RoundType, "full") == true){
 		iMoney = g_FullRound_Money.IntValue;
 		if (GetClientTeam(client) == CS_TEAM_CT && g_Force_CT == false){
-			int random = GetRandomInt(1, 100);
-			if (random < g_AWP_Random.IntValue && g_AWP[client]){
-				if (g_iAWP_CT < g_AWP_CT.IntValue){
-					GivePlayerItem(client, "weapon_awp");
-					iMoney -= GetWeaponPrice("weapon_awp");
-					g_iAWP_CT++;
-				}
-				else {
-					GivePlayerItem(client, g_Rifle_CT[client]);
-					iMoney -= GetWeaponPrice(g_Rifle_CT[client]);
-				}
-			}
-			else {
-				GivePlayerItem(client, g_Rifle_CT[client]);
-				iMoney -= GetWeaponPrice(g_Rifle_CT[client]);
-			}
+			GivePlayerItem(client, g_Rifle_CT[client]);
+			iMoney -= GetWeaponPrice(g_Rifle_CT[client]);
 			GivePlayerItem(client, g_Full_Pistol_CT[client]);
 			iMoney -= GetWeaponPrice(g_Full_Pistol_CT[client]);
 		}
 		else if (GetClientTeam(client) == CS_TEAM_T && g_Force_T == false){
-			int random = GetRandomInt(1, 10);
-			if (random < g_AWP_Random.IntValue && g_AWP[client]){
-				if (g_iAWP_T < g_AWP_T.IntValue){
-					GivePlayerItem(client, "weapon_awp");
-					iMoney -= GetWeaponPrice("weapon_awp");
-					g_iAWP_T++;
-				}
-				else {
-					GivePlayerItem(client, g_Rifle_T[client]);
-					iMoney -= GetWeaponPrice(g_Rifle_T[client]);
-				}
-			}
-			else {
-				GivePlayerItem(client, g_Rifle_T[client]);
-				iMoney -= GetWeaponPrice(g_Rifle_T[client]);
-			}
+			GivePlayerItem(client, g_Rifle_T[client]);
+			iMoney -= GetWeaponPrice(g_Rifle_T[client]);
 			GivePlayerItem(client, g_Full_Pistol_T[client]);
 			iMoney -= GetWeaponPrice(g_Full_Pistol_T[client]);
 		}
@@ -749,26 +782,14 @@ void GivePlayerWeapon(int client)
 		}
 		for (int i = 0; i < 2; i++){
 			if (GetClientTeam(client) == CS_TEAM_CT){
-				int random = GetRandomInt(1, 4);
-				if (random == 1 && iMoney >= 400 && g_iSmoke_CT < g_Smoke_CT.IntValue && g_Smoke[client] == 0){
-					GivePlayerItem(client, "weapon_smokegrenade");
-					g_iSmoke_CT++;
-					iMoney -= 400;
-					g_Smoke[client]++;
-				}
-				else if (random == 2 && iMoney >= 300 && g_iFlash_CT < g_Flash_CT.IntValue && g_Flash[client] < 2){
+				int random = GetRandomInt(1, 2);
+				if (random == 1 && iMoney >= 300 && g_iFlash_CT < g_Flash_CT.IntValue && g_Flash[client] < 2){
 					GivePlayerItem(client, "weapon_flashbang");
 					g_iFlash_CT++;
 					iMoney -= 300;
 					g_Flash[client]++;
 				}
-				else if(random == 3 && iMoney >= 600 && g_iFire_CT < g_Fire_CT.IntValue && g_Fire[client] == 0){
-					GivePlayerItem(client, "weapon_incgrenade")
-					g_iFire_CT++;
-					iMoney -= 600;
-					g_Fire[client]++;
-				}
-				else if(random == 4 && iMoney >= 300 && g_igrenade_CT < g_Grenade_CT.IntValue && g_Grenade[client] == 0){
+				else if(random == 2 && iMoney >= 300 && g_igrenade_CT < g_Grenade_CT.IntValue && g_Grenade[client] == 0){
 					GivePlayerItem(client, "weapon_hegrenade");
 					g_igrenade_CT++;
 					iMoney -= 300;
@@ -776,26 +797,14 @@ void GivePlayerWeapon(int client)
 				}
 			}
 			else if (GetClientTeam(client) == CS_TEAM_T){
-				int random = GetRandomInt(1, 4);
-				if (random == 1 && iMoney >= 400 && g_iSmoke_T < g_Smoke_T.IntValue && g_Smoke[client] == 0){
-					GivePlayerItem(client, "weapon_smokegrenade");
-					g_iSmoke_T++;
-					iMoney -= 400;
-					g_Smoke[client]++;
-				}
-				else if (random == 2 && iMoney >= 300 && g_iFlash_T < g_Flash_T.IntValue && g_Flash[client] < 2){
+				int random = GetRandomInt(1, 2);
+				if (random == 1 && iMoney >= 300 && g_iFlash_T < g_Flash_T.IntValue && g_Flash[client] < 2){
 					GivePlayerItem(client, "weapon_flashbang");
 					g_iFlash_T++;
 					iMoney -= 300;
 					g_Flash[client]++;
 				}
-				else if(random == 3 && iMoney >= 400 && g_iFire_T < g_Fire_T.IntValue && g_Fire[client] == 0){
-					GivePlayerItem(client, "weapon_incgrenade")
-					g_iFire_T++;
-					iMoney -= 400;
-					g_Fire[client]++;
-				}
-				else if(random == 4 && iMoney >= 300 && g_igrenade_T < g_Grenade_T.IntValue && g_Grenade[client] == 0){
+				else if(random == 2 && iMoney >= 300 && g_igrenade_T < g_Grenade_T.IntValue && g_Grenade[client] == 0){
 					GivePlayerItem(client, "weapon_hegrenade");
 					g_igrenade_T++;
 					iMoney -= 300;
@@ -844,7 +853,10 @@ void ShowInfo()
 	else {
 		Format(roundtype, sizeof(roundtype), "%t", "Full Buy Round");
 	}
-	Retakes_MessageToAll("%t", "Now Round", roundtype);
+	char output[1024];
+	FormatEx(output, sizeof(output), "%t", "Now Round", roundtype);
+	Colorize(output, sizeof(output));
+	Retakes_MessageToAll(output);
 	
 	Bombsite site = Retakes_GetCurrrentBombsite();
 	
@@ -855,7 +867,8 @@ void ShowInfo()
 		Format(g_BombSite, sizeof(g_BombSite), "%t", "Bombsite B");
 	}
 	
-	PrintHintTextToAll("t", "Hint Now Round", roundtype, g_BombSite);
+	FormatEx(output, sizeof(output), "%t", "Hint Now Round", roundtype, g_BombSite);
+	PrintHintTextToAll(output);
 }
 
 bool IsValidClient(int client)
@@ -872,6 +885,9 @@ char GetWeaponName(const char [] weapon)
 	char name[256];
 	if (StrEqual(weapon, "weapon_m4a1"))
 		Format(name, sizeof(name), "M4A4");
+
+	else if (StrEqual(weapon, "weapon_scout"))
+		FormatEx(name, sizeof(name), "SSG08");
 	
 	else if (StrEqual(weapon, "weapon_m4a1_silencer"))
 		Format(name, sizeof(name), "M4A1-S");
@@ -1059,4 +1075,13 @@ int GetWeaponPrice(const char[] weapon)
 		return 650;
 
 	return 0;
+}
+
+stock void Colorize(char[] msg, int size, bool stripColor = false) {
+  for (int i = 0; i < sizeof(_colorNames); i++) {
+    if (stripColor)
+      ReplaceString(msg, size, _colorNames[i], "\x01");  // replace with white
+    else
+      ReplaceString(msg, size, _colorNames[i], _colorCodes[i]);
+  }
 }
