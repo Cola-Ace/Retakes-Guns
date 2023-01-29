@@ -1,119 +1,95 @@
 "Phrases"
 {
-    "Main Menu Title"
+    "General Menu Title"
     {
         "chi" "更换枪械总菜单"
-        "en" "Change guns main menu"
+        "en" "General Menu"
     }
-    "Main Menu Rifle"
+    "General Menu Rifle"
     {
         "#format" "{1:s}"
         "chi" "更换步枪\n当前选择: {1}"
         "en" "Change rifle\nYour selection: {1}"
     }
-    "Main Menu Pistol Round"
+    "General Menu Pistol"
     {
         "#format" "{1:s}"
         "chi" "更换手枪局手枪\n当前选择: {1}"
         "en" "Change pistol-round's pistol\nYour selection: {1}"
     }
-    "Main Menu Full Buy Round"
+    "General Menu Full Pistol"
     {
         "#format" "{1:s}"
         "chi" "更换全起局手枪\n当前选择: {1}"
         "en" "Change full-buy-round's pistol\nYour selection: {1}"
     }
-    "Main Menu SMG"
+    "General Menu Force"
     {
         "#format" "{1:s}"
         "chi" "更换冲锋枪\n当前选择: {1}"
         "en" "Change SMG\nYour selection: {1}"
     }
-    "Main Menu AWP"
+    "General Menu AWP"
     {
         "#format" "{1:s}"
         "chi" "更换是否使用狙击枪\n当前选择: {1}"
         "en" "Change use or not AWP\nYour selection: {1}"
     }
-    "Use Weapon Next Round"
+    "Appear Next Round"
     {
         "chi" "你将在下一回合使用你选择的武器"
         "en" "You will use the weapon of your choice in the next round"
     }
-    "No Spectator Select Weapon"
+    "Invalid Team"
     {
         "chi" "你不能在观察者选择武器"
         "en" "You can't choose weapons in the spectator team"
     }
-    "Gun Menu Pistol Round CT"
+    "Pistol Menu Title"
     {
         "#format" "{1:s}"
-        "chi" "请选择手枪局的手枪 (CT) \n当前选择: {1}"
-        "en" "Choose pistol-round's pistol (CT) \nYour selection: {1}"
+        "chi" "请选择手枪局的手枪\n当前选择: {1}"
+        "en" "Choose pistol-round's pistol\nYour selection: {1}"
     }
-    "Gun Menu Pistol Round T"
+    "Full Pistol Menu Title"
     {
         "#format" "{1:s}"
-        "chi" "请选择手枪局的手枪 (T) \n当前选择: {1}"
-        "en" "Choose pistol-round's pistol (T) \nYour selection: {1}"
+        "chi" "请选择全起局的手枪\n当前选择: {1}"
+        "en" "Choose full-buy-round's pistol\nYour selection: {1}"
     }
-    "Gun Menu Full Round Pistol CT"
+    "Force Menu Title"
     {
         "#format" "{1:s}"
-        "chi" "请选择全起局的手枪 (CT) \n当前选择: {1}"
-        "en" "Choose full-buy-round's pistol (CT) \nYour selection: {1}"
+        "chi" "请选择冲锋枪\n当前选择: {1}"
+        "en" "Choose SMG\nYour selection: {1}"
     }
-    "Gun Menu Full Round Pistol T"
+    "Rifle Menu Title"
     {
         "#format" "{1:s}"
-        "chi" "请选择全起局的手枪 (T) \n当前选择: {1}"
-        "en" "Choose full-buy-round's pistol (T) \nYour selection: {1}"
+        "chi" "请选择步枪\n当前选择: {1}"
+        "en" "Choose rifle\nYour selection: {1}"
     }
-    "Gun Menu SMG CT"
-    {
-        "#format" "{1:s}"
-        "chi" "请选择冲锋枪 (CT) \n当前选择: {1}"
-        "en" "Choose SMG (CT) \nYour selection: {1}"
-    }
-    "Gun Menu SMG T"
-    {
-        "#format" "{1:s}"
-        "chi" "请选择冲锋枪 (T) \n当前选择: {1}"
-        "en" "Choose SMG (T) \nYour selection: {1}"
-    }
-    "Gun Menu Rifle CT"
-    {
-        "#format" "{1:s}"
-        "chi" "请选择步枪 (CT) \n当前选择: {1}"
-        "en" "Choose rifle (CT) \nYour selection: {1}"
-    }
-    "Gun Menu Rifle T"
-    {
-        "#format" "{1:s}"
-        "chi" "请选择步枪 (T) \n当前选择: {1}"
-        "en" "Choose rifle (T) \nYour selection: {1}"
-    }
-    "Gun Menu AWP"
+    "Use AWP"
     {
         "#format" "{1:s}"
         "chi" "是否希望在全起局拿到AWP?\n当前选择: {1}"
-        "en" "Do you want to get AWP in full buy round?\nYour selection: {1}"
+        "en" "Do you want to get AWP in full round?\nYour selection: {1}"
     }
     "Pistol Round"
     {
         "chi" "手枪局"
         "en" "Pistol Round"
     }
-    "Full Buy Round"
+    "Full Round"
     {
         "chi" "全起局"
-        "en" "Full Buy Round"
+        "en" "Full Round"
     }
     "Now Round"
     {
         "#format" "{1:s}"
-        "chi" "当前回合: {green}{1}{default}"
-        "en" "Now is: {green}{1}{default}"
+        "chi" "当前回合: {GREEN}{1}{NORMAL}"
+        "en" "Now is: {GREEN}{1}{NORMAL}"
     }
     "Hint Now Round"
     {
@@ -130,16 +106,6 @@
     {
         "chi" "B包点"
         "en" "Bombsite B"
-    }
-    "Enabled"
-    {
-        "chi" "开启"
-        "en" "Enabled"
-    }
-    "Disabled"
-    {
-        "chi" "关闭"
-        "en" "Disabled"
     }
     "Yes"
     {

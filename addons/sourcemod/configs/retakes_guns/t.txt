@@ -1,0 +1,6 @@
+weapon_glock
+weapon_tec9
+
+weapon_ak47
+weapon_galilar
+weapon_sg556

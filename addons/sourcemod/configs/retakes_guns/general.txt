@@ -1,0 +1,6 @@
+weapon_deagle
+weapon_revolver
+weapon_cz75a
+weapon_p250
+
+weapon_scout
