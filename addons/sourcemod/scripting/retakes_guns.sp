@@ -116,19 +116,6 @@ public void OnClientCookiesCached(int client){
 
     GetClientCookie(client, g_hAWP, buffer, sizeof(buffer));
     if (buffer[0] != '\0') g_GunSelect[client].awp = view_as<bool>(StringToInt(buffer));
-
-    // GetClientCookie(client, g_hPistolCT, g_GunSelect[client].pistol_ct, sizeof(GunSelect::pistol_ct));
-    // GetClientCookie(client, g_hPistolT, g_GunSelect[client].pistol_t, sizeof(GunSelect::pistol_t));
-    // GetClientCookie(client, g_hForceCT, g_GunSelect[client].force_ct, sizeof(GunSelect::force_ct));
-    // GetClientCookie(client, g_hForceT, g_GunSelect[client].force_t, sizeof(GunSelect::force_t));
-    // GetClientCookie(client, g_hRifleCT, g_GunSelect[client].rifle_ct, sizeof(GunSelect::rifle_ct));
-    // GetClientCookie(client, g_hRifleT, g_GunSelect[client].rifle_t, sizeof(GunSelect::rifle_t));
-    // GetClientCookie(client, g_hRiflePistolCT, g_GunSelect[client].rifle_pistol_ct, sizeof(GunSelect::rifle_pistol_ct));
-    // GetClientCookie(client, g_hRiflePistolT, g_GunSelect[client].rifle_pistol_t, sizeof(GunSelect::rifle_pistol_t));
-
-    // char awp[4];
-    // GetClientCookie(client, g_hAWP, awp, sizeof(awp));
-    // g_GunSelect[client].awp = view_as<bool>(StringToInt(awp));
 }
 
 public void OnClientDisconnect(int client){
