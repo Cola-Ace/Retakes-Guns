@@ -19,7 +19,7 @@ public Plugin myinfo = {
     name = "[Retakes] Guns",
     author = "Xc_ace",
     description = "Description",
-    version = "0.1 alpha",
+    version = "2.0",
     url = "https://github.com/Cola-Ace/Retakes-Guns"
 }
 
