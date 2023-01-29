@@ -107,6 +107,12 @@ public void OnClientCookiesCached(int client){
 
     GetClientCookie(client, g_hRiflePistolT, buffer, sizeof(buffer));
     if (strlen(buffer) > 5) FormatEx(g_GunSelect[client].rifle_pistol_t, sizeof(GunSelect::rifle_pistol_t), buffer);
+
+    GetClientCookie(client, g_hRifleCT, buffer, sizeof(buffer));
+    if (strlen(buffer) > 5) FormatEx(g_GunSelect[client].rifle_ct, sizeof(GunSelect::rifle_ct), buffer);
+
+    GetClientCookie(client, g_hRifleT, buffer, sizeof(buffer));
+    if (strlen(buffer) > 5) FormatEx(g_GunSelect[client].rifle_t, sizeof(GunSelect::rifle_t), buffer);
 	
     GetClientCookie(client, g_hForceCT, buffer, sizeof(buffer));
     if (strlen(buffer) > 5) FormatEx(g_GunSelect[client].force_ct, sizeof(GunSelect::force_ct), buffer);
