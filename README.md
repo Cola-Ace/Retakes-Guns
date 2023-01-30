@@ -3,6 +3,8 @@ It only works in CS:GO.
 
 # Update Logs
 
+- 2023.01.30 14:35 - Added more cvars to control the utils
+
 - 2023.01.30 12:10 - fixed bug cannot showing the Full Round's message
 
 - 2023.01.29 20:00 - I rebuilt it and it works perfectly. Its avaliable in master branch!
