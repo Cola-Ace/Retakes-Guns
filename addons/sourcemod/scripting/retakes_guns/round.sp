@@ -47,6 +47,8 @@ stock void FullRound(){
 
         // awp
         for (int i = 0; i < (team == CS_TEAM_CT ? g_cAWP_T.IntValue:g_cAWP_CT.IntValue); i++){
+            if (players.Length == 0) break;
+
             int index = GetRandomInt(0, players.Length - 1);
             int client = players.Get(index);
 
@@ -62,8 +64,9 @@ stock void FullRound(){
     }
 
     FormatEx(type, sizeof(type), "%t", "Full Round");
+    Retakes_MessageToAll("%t", "Now Round", type);
+
     FormatEx(output, sizeof(output), "%t", "Hint Now Round", type, bombsite);
-    Retakes_MessageToAll("%t", "Now Round");
     PrintHintTextToAll(output);
 
     ArrayList ct_awp = new ArrayList();
@@ -80,6 +83,8 @@ stock void FullRound(){
 
     // awp
     for (int i = 0; i < g_cAWP_CT.IntValue; i++){
+        if (ct_awp.Length == 0) break;
+
         int index = GetRandomInt(0, ct_awp.Length - 1);
         int client = ct_awp.Get(index);
 
@@ -92,6 +97,8 @@ stock void FullRound(){
     }
 
     for (int i = 0; i < g_cAWP_T.IntValue; i++){
+        if (t_awp.Length == 0) break;
+
         int index = GetRandomInt(0, t_awp.Length - 1);
         int client = t_awp.Get(index);
 
