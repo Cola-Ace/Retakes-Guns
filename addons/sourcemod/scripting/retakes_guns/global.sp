@@ -34,7 +34,16 @@ g_cForceRoundRandom,
 g_cUtilsMinimum,
 g_cUtilsMaximum,
 g_cAWP_CT,
-g_cAWP_T;
+g_cAWP_T,
+// Utils
+g_cSmokeCT,
+g_cSmokeT,
+g_cFlashCT,
+g_cFlashT,
+g_cFireCT,
+g_cFireT,
+g_cHeGrenadeCT,
+g_cHeGrenadeT;
 
 Handle g_hPistolCT,
 g_hPistolT,

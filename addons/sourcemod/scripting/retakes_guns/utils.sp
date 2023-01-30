@@ -2,6 +2,9 @@ stock void InitWeaponList(){
     g_WeaponGeneral.Clear();
     g_WeaponCT.Clear();
     g_WeaponT.Clear();
+    g_WeaponForceCT.Clear();
+    g_WeaponForceT.Clear();
+    g_WeaponForceGeneral.Clear();
 
     char path[PLATFORM_MAX_PATH], classname[32];
 

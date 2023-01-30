@@ -1,4 +1,4 @@
-stock void GivePlayerWeapon(int client, RoundType type){
+stock void GivePlayerWeapon(int client, RoundType type, ArrayList ct_grenade = view_as<ArrayList>(INVALID_HANDLE), ArrayList t_grenade = view_as<ArrayList>(INVALID_HANDLE)){
     int team = GetClientTeam(client);
 
     StripPlayerWeapons(client);
@@ -39,28 +39,36 @@ stock void GivePlayerWeapon(int client, RoundType type){
         case Round_FullRound:{
             SetClientArmor(client, 100);
 
-            ArrayList grenades = new ArrayList();
-            grenades.Push(Weapon_HeGrenade);
-            grenades.Push(Weapon_Flashbang);
-            grenades.Push(Weapon_SmokeGrenade);
-
             if (team == CS_TEAM_CT){
                 SetClientDefuser(client);
 
                 GivePlayerItem(client, g_GunSelect[client].rifle_pistol_ct);
                 GivePlayerItem(client, g_GunSelect[client].rifle_ct);
-
-                grenades.Push(Weapon_IncGrenade);
             } else {
                 GivePlayerItem(client, g_GunSelect[client].rifle_pistol_t);
                 GivePlayerItem(client, g_GunSelect[client].rifle_t);
-
-                grenades.Push(Weapon_Molotov);
             }
 
+            ArrayList grenades = new ArrayList();
             for (int i = 0; i < GetRandomInt(g_cUtilsMinimum.IntValue, g_cUtilsMaximum.IntValue); i++){
-                int index = GetRandomInt(0, grenades.Length - 1);
-                int util = grenades.Get(index);
+                int index, util;
+                
+                if (team == CS_TEAM_CT){
+                    index = GetRandomInt(0, ct_grenade.Length - 1);
+                    util = ct_grenade.Get(index);
+                } else {
+                    index = GetRandomInt(0, t_grenade.Length - 1);
+                    util = t_grenade.Get(index);
+                }
+
+                if (util != 1 && grenades.FindValue(util) != -1) continue;
+                grenades.Push(util);
+                if (team == CS_TEAM_CT) ct_grenade.Erase(index);
+                else t_grenade.Erase(index);
+            }
+
+            for (int i = 0; i < grenades.Length; i++){
+                int util = grenades.Get(i);
 
                 switch (util){
                     case 0:GivePlayerItem(client, "weapon_hegrenade");
@@ -69,8 +77,6 @@ stock void GivePlayerWeapon(int client, RoundType type){
                     case 3:GivePlayerItem(client, "weapon_molotov");
                     case 4:GivePlayerItem(client, "weapon_incgrenade");
                 }
-
-                grenades.Erase(index);
             }
         }
     }

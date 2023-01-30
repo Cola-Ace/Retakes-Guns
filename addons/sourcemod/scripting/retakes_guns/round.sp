@@ -14,6 +14,18 @@ stock void PistolRound(){
 }
 
 stock void FullRound(){
+    ArrayList ct_grenade = new ArrayList();
+    ArrayList t_grenade = new ArrayList();
+
+    for (int i = 0; i < g_cSmokeCT.IntValue; i++) ct_grenade.Push(Weapon_SmokeGrenade);
+    for (int i = 0; i < g_cSmokeT.IntValue; i++) t_grenade.Push(Weapon_SmokeGrenade);
+    for (int i = 0; i < g_cFlashCT.IntValue; i++) ct_grenade.Push(Weapon_Flashbang);
+    for (int i = 0; i < g_cFlashT.IntValue; i++) t_grenade.Push(Weapon_Flashbang);
+    for (int i = 0; i < g_cFireCT.IntValue; i++) ct_grenade.Push(Weapon_IncGrenade);
+    for (int i = 0; i < g_cFireT.IntValue; i++) t_grenade.Push(Weapon_Molotov);
+    for (int i = 0; i < g_cHeGrenadeCT.IntValue; i++) ct_grenade.Push(Weapon_HeGrenade);
+    for (int i = 0; i < g_cHeGrenadeT.IntValue; i++) t_grenade.Push(Weapon_HeGrenade);
+
     char output[512], type[32], bombsite[32];
     FormatEx(bombsite, sizeof(bombsite), "%t", Retakes_GetCurrrentBombsite() == BombsiteA ? "Bombsite A":"Bombsite B");
 
@@ -41,7 +53,7 @@ stock void FullRound(){
             if (GetClientTeam(i) == team) GivePlayerWeapon(i, Round_ForceRound);
             else if (GetClientTeam(i) == (team == CS_TEAM_CT ? CS_TEAM_T:CS_TEAM_CT)){
                 if (g_GunSelect[i].awp) players.Push(i);
-                GivePlayerWeapon(i, Round_FullRound);
+                GivePlayerWeapon(i, Round_FullRound, ct_grenade, t_grenade);
             }
         }
 
@@ -74,7 +86,7 @@ stock void FullRound(){
     for (int i = 0; i < MaxClients; i++){
         if (!IsPlayer(i)) continue;
 
-        GivePlayerWeapon(i, Round_FullRound);
+        GivePlayerWeapon(i, Round_FullRound, ct_grenade, t_grenade);
         if (g_GunSelect[i].awp){
             if (GetClientTeam(i) == CS_TEAM_CT) ct_awp.Push(i);
             else if (GetClientTeam(i) == CS_TEAM_T) t_awp.Push(i);

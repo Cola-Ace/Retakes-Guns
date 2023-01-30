@@ -19,7 +19,7 @@ public Plugin myinfo = {
     name = "[Retakes] Guns",
     author = "Xc_ace",
     description = "Description",
-    version = "2.0",
+    version = "2.1",
     url = "https://github.com/Cola-Ace/Retakes-Guns"
 }
 
@@ -42,6 +42,15 @@ public void OnPluginStart(){
     g_cUtilsMaximum = CreateConVar("sm_retakes_guns_utils_maximum", "2", "Maximum of utils for player", _, true, 0.0, true, 4.0);
     g_cAWP_CT = CreateConVar("sm_retakes_guns_awp_ct", "1", "Maximum of AWP in CT");
     g_cAWP_T = CreateConVar("sm_retakes_guns_awp_t", "1", "Maximum of AWP in T");
+    // Utils
+    g_cSmokeCT = CreateConVar("sm_retakes_guns_smoke_ct", "2", "Maximum of Smoke in CT", _, true, 0.0, true, 5.0);
+    g_cSmokeT = CreateConVar("sm_retakes_guns_smoke_t", "1", "Maximum of Smoke in T", _, true, 0.0, true, 4.0);
+    g_cFlashCT = CreateConVar("sm_retakes_guns_flash_ct", "4", "Maximum of Flashbang in CT", _, true, 0.0, true, 10.0);
+    g_cFlashT = CreateConVar("sm_retakes_guns_flash_t", "4", "Maximum of Flashbang in T", _, true, 0.0, true, 8.0);
+    g_cFireCT = CreateConVar("sm_retakes_guns_fire_ct", "2", "Maximum of IncGrenade in CT", _, true, 0.0, true, 5.0);
+    g_cFireT = CreateConVar("sm_retakes_guns_fire_t", "2", "Maximum of Molotov in T", _, true, 0.0, true, 4.0);
+    g_cHeGrenadeCT = CreateConVar("sm_retakes_guns_grenade_ct", "2", "Maximum of HeGrenade in CT", _, true, 0.0, true, 5.0);
+    g_cHeGrenadeT = CreateConVar("sm_retakes_guns_grenade_t", "2", "Maximum of HeGrenade in CT", _, true, 0.0, true, 4.0);
 
     AutoExecConfig(true, "retakes_guns");
     ExecuteAndSaveCvars("sourcemod/retakes_guns.cfg");
@@ -160,7 +169,7 @@ public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcas
 
         case 1:{
             int random = GetRandomInt(1, 100);
-            if (random <= g_cPistolRoundRandom.IntValue) PistolRound();
+            if (g_cPistolRound.BoolValue && random <= g_cPistolRoundRandom.IntValue) PistolRound();
             else FullRound();
         }
     }
