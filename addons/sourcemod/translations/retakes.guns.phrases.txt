@@ -80,6 +80,11 @@
         "chi" "手枪局"
         "en" "Pistol Round"
     }
+    "Force Round"
+    {
+        "chi" "强起局"
+        "en"  "Force Round"
+    }
     "Full Round"
     {
         "chi" "全起局"
