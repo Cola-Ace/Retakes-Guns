@@ -54,9 +54,13 @@ stock void GivePlayerWeapon(int client, RoundType type, ArrayList ct_grenade = v
                 int index, util;
                 
                 if (team == CS_TEAM_CT){
+                    if (ct_grenade.Length == 0) break; // no util
+
                     index = GetRandomInt(0, ct_grenade.Length - 1);
                     util = ct_grenade.Get(index);
                 } else {
+                    if (t_grenade.Length == 0) break; // no util
+
                     index = GetRandomInt(0, t_grenade.Length - 1);
                     util = t_grenade.Get(index);
                 }

@@ -35,17 +35,20 @@ stock void FullRound(){
 
         // for force team
         FormatEx(type, sizeof(type), "%t", "Force Round");
+
+        FormatEx(output, sizeof(output), "%t", "Now Round", type);
+        Retakes_MessageToTeam(team, output);
+
         FormatEx(output, sizeof(output), "%t", "Hint Now Round", type, bombsite);
-
-        Retakes_MessageToTeam(team, "%t", "Now Round", type);
-
         PrintHintTextToTeam(team, output);
 
         // for full team
         FormatEx(type, sizeof(type), "%t", "Full Round");
         FormatEx(output, sizeof(output), "%t", "Hint Now Round", type, bombsite);
         PrintHintTextToTeam(team == CS_TEAM_CT ? CS_TEAM_T:CS_TEAM_CT, output);
-        Retakes_MessageToTeam(team == CS_TEAM_CT ? CS_TEAM_T:CS_TEAM_CT, "%t", "Now Round", type);
+        
+        FormatEx(output, sizeof(output), "%t", "Now Round", type);
+        Retakes_MessageToTeam(team == CS_TEAM_CT ? CS_TEAM_T:CS_TEAM_CT, output);
 
         for (int i = 0; i < MaxClients; i++){
             if (!IsPlayer(i)) continue;

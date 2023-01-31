@@ -97,13 +97,13 @@ stock void StripPlayerWeapons(int client)
 	}
 }
 
-stock void Retakes_MessageToTeam(int team, const char[] text, any:...){
+stock void Retakes_MessageToTeam(int team, const char[] text, any ...){
     for (int i = 0; i < MaxClients; i++){
         if (IsPlayer(i) && GetClientTeam(i) == team) Retakes_Message(i, text);
     }
 }
 
-stock void PrintHintTextToTeam(int team, const char[] text, any:...){
+stock void PrintHintTextToTeam(int team, const char[] text, any ...){
     for (int i = 0; i < MaxClients; i++){
         if (IsPlayer(i) && GetClientTeam(i) == team) PrintHintText(i, text);
     }

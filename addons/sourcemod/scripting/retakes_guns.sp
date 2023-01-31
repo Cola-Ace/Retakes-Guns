@@ -19,7 +19,7 @@ public Plugin myinfo = {
     name = "[Retakes] Guns",
     author = "Xc_ace",
     description = "Description",
-    version = "2.1",
+    version = "2.2",
     url = "https://github.com/Cola-Ace/Retakes-Guns"
 }
 
@@ -74,6 +74,8 @@ public void OnPluginStart(){
     g_WeaponForceCT = new ArrayList(32);
     g_WeaponForceT = new ArrayList(32);
     g_WeaponForceGeneral = new ArrayList(32);
+
+    InitWeaponList();
 }
 
 public void OnMapStart(){
