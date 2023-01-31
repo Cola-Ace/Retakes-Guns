@@ -3,6 +3,8 @@ It only works in CS:GO.
 
 # Update Logs
 
+- 2023.01.31 22:30 - fixed bug force round doesn't work, fixed bug when util cannot be given it will throw error
+
 - 2023.01.30 14:35 - Added more cvars to control the utils
 
 - 2023.01.30 12:10 - fixed bug cannot showing the Full Round's message
